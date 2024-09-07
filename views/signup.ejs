@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>SignUp</h2>
+        <form id ="Signup-form" action="/api/signup" method="post">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your name" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="password">password:</label>
+            <input type="password" id="password" name="password" placeholder="password" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="email" required>
+          </div>
+          <button type="submit" class="submit-btn">Submit</button>
+        </form>
+        <script>
+          document
+          .getElementById("Signup-form")
+          .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          const email = document.getElementById("email").value;
+      //     //   const token = document.getElementById("token").value;
+      // //   console.log(token);
+
+        const response = await fetch("/api/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username,password,email }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert('Registration Complete, You Can login Now');
+          // alert(result.message);
+          window.location.href = "/";
+        } else {
+              if (result.error && result.error.code === 11000) {
+                alert('Error: Username already exists. Please choose a different username.');
+              } else {
+                alert('Error: Registration cannot be completed.');
+              }
+            }
+          });
+
+      </script>
+        <p>Already have an account? <a class="link" href="/">Login</a></p>
+
+      </div>
+</body>
+</html>
